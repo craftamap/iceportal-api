@@ -22,9 +22,9 @@ type Status struct {
 	TZN          string  `json:"tzn"`
 	WagonClass   string  `json:"wagonClass"`
 	Connectivity struct {
-		RemainingTimeSeconds int64  `json:"remainingTimeSeconds"`
 		NextState            string `json:"nextState"`
 		CurrentState         string `json:"currentState"`
+		RemainingTimeSeconds int64  `json:"remainingTimeSeconds"`
 	}
 	Connection bool `json:"connection"`
 	BAP        bool `json:"bap"`
