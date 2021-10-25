@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/charmbracelet/bubbles/progress"
@@ -16,6 +17,7 @@ type model struct {
 	Track           string
 	Progress        float64
 	NextStationName string
+	Width           int64
 	Prog            progress.Model
 }
 
@@ -84,7 +86,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 	case tea.WindowSizeMsg:
-		m.Prog.Width = msg.Width
+		m.Prog.Width = msg.Width - 4
+		m.Width = int64(msg.Width)
 	case tickMsg:
 		return m, fetch
 	case fetchMsg:
@@ -102,7 +105,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	return fmt.Sprintf("%3.f km/h • Next arrival in: %s • Track %s • %s\n%s", m.Speed, m.NextStopIn, m.Track, m.NextStationName, m.Prog.ViewAs(float64(m.Progress)))
+	statusLineLeft := fmt.Sprintf("%3.f km/h • Next arrival in: %s", m.Speed, m.NextStopIn)
+	statusLineRight := fmt.Sprintf("Track %s • %s", m.Track, m.NextStationName)
+	// we have 2 spaces padding left and right = 4
+	spaceInMiddle := int(m.Width) - 4 - len(statusLineLeft) - len(statusLineRight)
+	if spaceInMiddle < 0 {
+		spaceInMiddle = 1
+	}
+	spacesInMiddle := strings.Repeat(" ", spaceInMiddle)
+
+	return fmt.Sprintf("\n\n  %s%s%s  \n"+
+		"  %s  \n\n", statusLineLeft, spacesInMiddle, statusLineRight, m.Prog.ViewAs(float64(m.Progress)))
 }
 
 func main() {
