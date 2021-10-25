@@ -17,7 +17,7 @@ type Status struct {
 	TileX        int64   `json:"tileX"`
 	Series       string  `json:"series"`
 	ServerTime   int64   `json:"serverTime"`
-	Speed        int64   `json:"speed"`
+	Speed        float64 `json:"speed"`
 	TrainType    string  `json:"trainType"`
 	TZN          string  `json:"tzn"`
 	WagonClass   string  `json:"wagonClass"`

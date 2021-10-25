@@ -28,9 +28,9 @@ type Station struct {
 
 type Timetable struct {
 	ArrivalDelay            string `json:"arrivalDelay"`
-	ScheduledDepartureTime  string `json:"scheduledDepartureTime"`
-	ActualDepartureTime     string `json:"actualDepartureTime"`
 	DepartureDelay          string `json:"departureDelay"`
+	ScheduledDepartureTime  int64  `json:"scheduledDepartureTime"`
+	ActualDepartureTime     int64  `json:"actualDepartureTime"`
 	ShowActualDepartureTime bool   `json:"showActualDepartureTime"`
 	ShowActualArrivalTime   bool   `json:"showActualArrivalTime"`
 	ScheduledArrivalTime    int64  `json:"scheduledArrivalTime"`
