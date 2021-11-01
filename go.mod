@@ -3,12 +3,15 @@ module github.com/craftamap/iceportal-api
 go 1.17
 
 require (
-	github.com/charmbracelet/bubbles v0.9.0 // indirect
-	github.com/charmbracelet/bubbletea v0.17.0 // indirect
+	github.com/charmbracelet/bubbles v0.9.0
+	github.com/charmbracelet/bubbletea v0.17.0
+	github.com/jarcoal/httpmock v1.0.8
+)
+
+require (
 	github.com/charmbracelet/harmonica v0.1.0 // indirect
 	github.com/charmbracelet/lipgloss v0.3.0 // indirect
 	github.com/containerd/console v1.0.2 // indirect
-	github.com/jarcoal/httpmock v1.0.8 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
