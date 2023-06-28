@@ -10,7 +10,10 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	iceportalapi "github.com/craftamap/iceportal-api"
+	"github.com/spf13/pflag"
 )
+
+var theme string
 
 type model struct {
 	Speed               float64
@@ -22,6 +25,7 @@ type model struct {
 	NextStationName     string
 	Width               int64
 	Prog                progress.Model
+	Theme               string
 }
 
 type tickMsg struct{}
@@ -39,7 +43,7 @@ func initialModel() model {
 		NextStationName:     "",
 		Track:               "",
 		Progress:            0,
-		Prog:                progress.NewModel(progress.WithSolidFill("#f20c00")),
+		Prog:                progress.NewModel(),
 	}
 }
 
@@ -79,6 +83,16 @@ func findNextArrival(tripInfo iceportalapi.TripInfo) iceportalapi.Stop {
 	return nextArrival
 }
 
+func (m model) getThemeColor() string {
+	if m.Theme == "portal" {
+		return "#f20c00"
+	}
+	if m.NextStopTimeActual == m.NextStopTimePlanned {
+		return "#08f300"
+	}
+	return "#f20c00"
+}
+
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	// Is it a key press?
@@ -107,6 +121,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.Track = stop.Track.Actual
 		m.NextStationName = stop.Station.Name
 		m.Progress = (float64(msg.trip.Trip.ActualPosition) / float64(msg.trip.Trip.TotalDistance))
+		m.Prog.FullColor = m.getThemeColor()
 		return m, fetch
 	}
 
@@ -135,7 +150,13 @@ func (m model) View() string {
 }
 
 func main() {
-	p := tea.NewProgram(initialModel())
+	pflag.StringVarP(&theme, "theme", "t", "portal", "Choose a theme: 'portal' or 'delay'")
+	pflag.Parse()
+
+	m := initialModel()
+	m.Theme = theme
+
+	p := tea.NewProgram(m)
 	if err := p.Start(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)

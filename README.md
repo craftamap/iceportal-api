@@ -8,6 +8,11 @@ Trains.
 
 ![Screenshot showing the iceportal-cli application](.github/screenshot-1.png)
 
+You can pick between one of two themes: `portal` and `delay`. The `portal` theme
+is the default one and looks like the screenshot above. The `delay` theme colors
+the progress bar according to the delay of the train: Green for no delay, red for
+a delay.
+
 You can get `iceportal-cli` by running: 
 
 ```
